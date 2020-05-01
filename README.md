@@ -1,3 +1,3 @@
 # JSON Formatter
-A simple JSON pretty-printer/formatter made with JavaFX
+A simple JSON pretty-printer/formatter+validator made with JavaFX
 

@@ -9,49 +9,42 @@ public class RecursiveDescendantParser {
 
     public boolean isValidJSON(List<Lexeme> inputTokenList) {
         index = 0;
-        if (object(inputTokenList) || array(inputTokenList))
-            return true;
-        return false;
-    }
-
-    private boolean object(List<Lexeme> input) {
-        if (index<input.size() && input.get(index).tokenType == LexemeTokenTypes.OPENING_BRACE) {
-            index += 1;
-
-            members(input);
-
-            if (index<input.size() && input.get(index).tokenType == LexemeTokenTypes.CLOSING_BRACE) {
-                index += 1;
-                return true;
-            }
+        if (object(inputTokenList) || array(inputTokenList)) {
+            return index >= inputTokenList.size();
         }
-        return false;
 
+        return false;
     }
+
 
     private boolean pair(List<Lexeme> input) {
-        if (index<input.size() && isValidIdentifier(input.get(index).tokenValue)) {
+        if (index < input.size() && isValidIdentifier(input.get(index).tokenValue)) {
             index += 1;
-            if (index<input.size() && input.get(index).tokenType == LexemeTokenTypes.COLON) {
+            if (index < input.size() && input.get(index).tokenType == LexemeTokenTypes.COLON) {
                 index += 1;
                 return value(input);
             }
         }
+        System.out.println("False call in PAIR, i=" + index);
         return false;
     }
 
     private boolean value(List<Lexeme> input) {
-        if(index>=input.size())
+        if (index >= input.size()) {
             return false;
+        }
         String val = input.get(index).tokenValue;
-        return isString(val) || isNumeric(val) || val.equals("true") || val.equals("false") || val.equals("null")
-                || object(input) || array(input);
+        if (isString(val) || isNumeric(val) || val.equals("true") || val.equals("false") || val.equals("null")) {
+            index += 1;
+            return true;
+        }
+        return object(input) || array(input);
     }
 
     private boolean members(List<Lexeme> input) {
-        if (index<input.size() && pair(input)) {
-            index += 1;
-            if (index<input.size() && input.get(index).tokenType == LexemeTokenTypes.COMMA) {
+        if (index < input.size() && pair(input)) {
+
+            if (index < input.size() && input.get(index).tokenType == LexemeTokenTypes.COMMA) {
                 index += 1;
                 return members(input);
             } else
@@ -61,9 +54,9 @@ public class RecursiveDescendantParser {
     }
 
     private boolean elements(List<Lexeme> input) {
-        if (index<input.size() && value(input)) {
-            index += 1;
-            if (index<input.size() && input.get(index).tokenType == LexemeTokenTypes.COMMA) {
+        if (index < input.size() && value(input)) {
+
+            if (index < input.size() && input.get(index).tokenType == LexemeTokenTypes.COMMA) {
                 index += 1;
                 return elements(input);
             } else
@@ -73,18 +66,43 @@ public class RecursiveDescendantParser {
     }
 
     private boolean array(List<Lexeme> input) {
-        if (index<input.size() && input.get(index).tokenType == LexemeTokenTypes.OPENING_BRACKET) {
+        if (index < input.size() && input.get(index).tokenType == LexemeTokenTypes.OPENING_BRACKET) {
             index += 1;
-            if (index<input.size() && elements(input)) {
+            if (index < input.size() && input.get(index).tokenType == LexemeTokenTypes.CLOSING_BRACKET) {
                 index += 1;
+                return true;
+            } else {
+                if(elements(input)){
+
+                    if(index<input.size() && input.get(index).tokenType==LexemeTokenTypes.CLOSING_BRACKET) {
+                        index+=1;
+                        return true;
+                    }
+                }
+                return false;
+
             }
-            if (index<input.size() && input.get(index).tokenType == LexemeTokenTypes.CLOSING_BRACKET) {
+        }
+
+        return false;
+    }
+
+    private boolean object(List<Lexeme> input) {
+        if (index < input.size() && input.get(index).tokenType == LexemeTokenTypes.OPENING_BRACE) {
+            index += 1;
+
+            members(input);
+
+            if (index < input.size() && input.get(index).tokenType == LexemeTokenTypes.CLOSING_BRACE) {
                 index += 1;
                 return true;
             }
         }
+
         return false;
+
     }
+
 
     private boolean isString(String s) {
         if (s.charAt(0) == '\"' && s.charAt(s.length() - 1) == '\"')
