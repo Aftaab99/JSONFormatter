@@ -2,9 +2,11 @@ package main;
 
 import formatter.JsonFormat;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import validator.Lexeme;
 import validator.Lexer;
@@ -25,24 +27,9 @@ public class Main extends Application {
     }
 
 
-    public static void main(String[] args) throws QuoteMismatchException {
-        String json = "{ \"id\" :\"Rahul's \\\" birthday is 1/7/17\", \"jobs\":[null, \"B1\", \"C1+90x!\"]}";
-        String json1 = "[1,2,3, [], 5, [1,2,3],{\"abc\": null}]";
-        String json2 = "[1,2,3]";
-        String json3 = "{\"a\":[1,2,3], \"b\": {\"c\": {\"d\": 5, \"e\":[]}}}";
-        String json4 = "{}";
-        //Test formatter
-        JsonFormat jsonFormat = new JsonFormat(2);
-        System.out.println(jsonFormat.formatJSON(json3));
 
-        Lexer lexer = new Lexer();
-        System.out.println(lexer.removeWhitespaces(json4));
-        List<Lexeme> list = lexer.tokenizeString(json4);
-        for (Lexeme l : list) {
-            System.out.println(String.format("Token = <%s> | Type = <%d>", l.tokenValue, l.tokenType));
-        }
-        RecursiveDescendantParser parser = new RecursiveDescendantParser();
-        System.out.println("The json is " + parser.isValidJSON(list));
+
+    public static void main(String[] args){
         launch(args);
     }
 }
