@@ -33,33 +33,33 @@ public class Lexer {
             } else {
 
                 if (inputString.charAt(i) == '{') {
-                    tokenList.add(new Lexeme("{", LexemeTokenTypes.OPENING_BRACE));
+                    tokenList.add(new Lexeme("{", Lexeme.LexemeTokenTypes.OPENING_BRACE));
                 } else if (inputString.charAt(i) == '}') {
                     if (!currentToken.toString().equals("")) {
-                        tokenList.add(new Lexeme(currentToken.toString(), LexemeTokenTypes.OTHER));
+                        tokenList.add(new Lexeme(currentToken.toString(), Lexeme.LexemeTokenTypes.OTHER));
                         currentToken.setLength(0); //reset currentToken
                     }
-                    tokenList.add(new Lexeme("}", LexemeTokenTypes.CLOSING_BRACE));
+                    tokenList.add(new Lexeme("}", Lexeme.LexemeTokenTypes.CLOSING_BRACE));
                 } else if (inputString.charAt(i) == '[') {
-                    tokenList.add(new Lexeme("[", LexemeTokenTypes.OPENING_BRACKET));
+                    tokenList.add(new Lexeme("[", Lexeme.LexemeTokenTypes.OPENING_BRACKET));
                 } else if (inputString.charAt(i) == ']') {
                     if (!currentToken.toString().equals("")) {
-                        tokenList.add(new Lexeme(currentToken.toString(), LexemeTokenTypes.OTHER));
+                        tokenList.add(new Lexeme(currentToken.toString(), Lexeme.LexemeTokenTypes.OTHER));
                         currentToken.setLength(0); //reset currentToken
                     }
-                    tokenList.add(new Lexeme("]", LexemeTokenTypes.CLOSING_BRACKET));
+                    tokenList.add(new Lexeme("]", Lexeme.LexemeTokenTypes.CLOSING_BRACKET));
                 } else if (inputString.charAt(i) == ',') {
                     if (!currentToken.toString().equals("")) {
-                        tokenList.add(new Lexeme(currentToken.toString(), LexemeTokenTypes.OTHER));
+                        tokenList.add(new Lexeme(currentToken.toString(), Lexeme.LexemeTokenTypes.OTHER));
                         currentToken.setLength(0); //reset currentToken
                     }
-                    tokenList.add(new Lexeme(",", LexemeTokenTypes.COMMA));
+                    tokenList.add(new Lexeme(",", Lexeme.LexemeTokenTypes.COMMA));
                 } else if (inputString.charAt(i) == ':') {
                     if (!currentToken.toString().equals("")) {
-                        tokenList.add(new Lexeme(currentToken.toString(), LexemeTokenTypes.OTHER));
+                        tokenList.add(new Lexeme(currentToken.toString(), Lexeme.LexemeTokenTypes.OTHER));
                         currentToken.setLength(0); //reset currentToken
                     }
-                    tokenList.add(new Lexeme(":", LexemeTokenTypes.COLON));
+                    tokenList.add(new Lexeme(":", Lexeme.LexemeTokenTypes.COLON));
                 } else if (inputString.charAt(i) == '"') {
                     insideQuotes = true;
                     currentToken.append('"');

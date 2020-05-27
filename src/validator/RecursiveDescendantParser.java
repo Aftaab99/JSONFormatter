@@ -1,6 +1,5 @@
 package validator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecursiveDescendantParser {
@@ -20,7 +19,7 @@ public class RecursiveDescendantParser {
     private boolean pair(List<Lexeme> input) {
         if (index < input.size() && isValidIdentifier(input.get(index).tokenValue)) {
             index += 1;
-            if (index < input.size() && input.get(index).tokenType == LexemeTokenTypes.COLON) {
+            if (index < input.size() && input.get(index).tokenType == Lexeme.LexemeTokenTypes.COLON) {
                 index += 1;
                 return value(input);
             }
@@ -44,7 +43,7 @@ public class RecursiveDescendantParser {
     private boolean members(List<Lexeme> input) {
         if (index < input.size() && pair(input)) {
 
-            if (index < input.size() && input.get(index).tokenType == LexemeTokenTypes.COMMA) {
+            if (index < input.size() && input.get(index).tokenType == Lexeme.LexemeTokenTypes.COMMA) {
                 index += 1;
                 return members(input);
             } else
@@ -56,7 +55,7 @@ public class RecursiveDescendantParser {
     private boolean elements(List<Lexeme> input) {
         if (index < input.size() && value(input)) {
 
-            if (index < input.size() && input.get(index).tokenType == LexemeTokenTypes.COMMA) {
+            if (index < input.size() && input.get(index).tokenType == Lexeme.LexemeTokenTypes.COMMA) {
                 index += 1;
                 return elements(input);
             } else
@@ -66,15 +65,15 @@ public class RecursiveDescendantParser {
     }
 
     private boolean array(List<Lexeme> input) {
-        if (index < input.size() && input.get(index).tokenType == LexemeTokenTypes.OPENING_BRACKET) {
+        if (index < input.size() && input.get(index).tokenType == Lexeme.LexemeTokenTypes.OPENING_BRACKET) {
             index += 1;
-            if (index < input.size() && input.get(index).tokenType == LexemeTokenTypes.CLOSING_BRACKET) {
+            if (index < input.size() && input.get(index).tokenType == Lexeme.LexemeTokenTypes.CLOSING_BRACKET) {
                 index += 1;
                 return true;
             } else {
                 if(elements(input)){
 
-                    if(index<input.size() && input.get(index).tokenType==LexemeTokenTypes.CLOSING_BRACKET) {
+                    if(index<input.size() && input.get(index).tokenType==Lexeme.LexemeTokenTypes.CLOSING_BRACKET) {
                         index+=1;
                         return true;
                     }
@@ -88,12 +87,12 @@ public class RecursiveDescendantParser {
     }
 
     private boolean object(List<Lexeme> input) {
-        if (index < input.size() && input.get(index).tokenType == LexemeTokenTypes.OPENING_BRACE) {
+        if (index < input.size() && input.get(index).tokenType == Lexeme.LexemeTokenTypes.OPENING_BRACE) {
             index += 1;
 
             members(input);
 
-            if (index < input.size() && input.get(index).tokenType == LexemeTokenTypes.CLOSING_BRACE) {
+            if (index < input.size() && input.get(index).tokenType == Lexeme.LexemeTokenTypes.CLOSING_BRACE) {
                 index += 1;
                 return true;
             }
