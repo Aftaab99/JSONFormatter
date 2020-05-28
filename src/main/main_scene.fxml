@@ -74,7 +74,7 @@
                 </VBox>
                 <VBox prefHeight="371.0" prefWidth="370.0">
                     <children>
-                        <TreeView disable="true" prefHeight="274.0" prefWidth="362.0" VBox.vgrow="ALWAYS">
+                        <TreeView fx:id="treeView1" prefHeight="274.0" prefWidth="362.0" VBox.vgrow="ALWAYS">
                             <VBox.margin>
                                 <Insets right="8.0" top="8.0" />
                             </VBox.margin>

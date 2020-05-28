@@ -1,3 +1,4 @@
+
 package ast;
 
 import validator.Lexeme;
@@ -29,16 +30,21 @@ public class RecursiveDescentParserAST {
             this.key = key;
             this.value = value;
         }
+
+        Pair() {
+
+        }
     }
 
 
     private Pair pair(List<Lexeme> input) {
-        Pair p;
+        Pair p = new Pair();
         if (index < input.size() && isValidIdentifier(input.get(index).tokenValue)) {
+            p.key = input.get(index).tokenValue;
             index += 1;
             if (index < input.size() && input.get(index).tokenType == Lexeme.LexemeTokenTypes.COLON) {
                 index += 1;
-                p = new Pair(input.get(index - 2).tokenValue, value(input));
+                p.value = value(input);
                 return p;
             }
         }
@@ -54,16 +60,16 @@ public class RecursiveDescentParserAST {
 
         if (isString(val)) {
             index += 1;
-            return new Value(val, Value.ValueType.STRING);
+            return new Value(val);
         } else if (isNumeric(val)) {
             index += 1;
-            return new Value(val, Value.ValueType.NUMERIC);
+            return new Value(val);
         } else if (val.equals("true") || val.equals("false")) {
             index += 1;
-            return new Value(val, Value.ValueType.BOOLEAN);
+            return new Value(val);
         } else if (val.equals("null")) {
             index += 1;
-            return new Value(val, Value.ValueType.NULL);
+            return new Value(val);
         }
 
         ASTNode objNode = object(input);
@@ -90,8 +96,8 @@ public class RecursiveDescentParserAST {
     private ArrayList<ASTNode> elements(List<Lexeme> input, ArrayList<ASTNode> elementList) {
         ASTNode valueNode = value(input);
         if (index < input.size() && valueNode != null) {
-            index++;
             elementList.add(valueNode);
+            System.out.println("Element list got updated. New size:"+elementList.size());
             if (index < input.size() && input.get(index).tokenType == Lexeme.LexemeTokenTypes.COMMA) {
                 index += 1;
                 return elements(input, elementList);

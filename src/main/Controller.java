@@ -1,28 +1,30 @@
 package main;
 
-import com.sun.javafx.tk.FileChooserType;
+import ast.ASTNode;
+import ast.RecursiveDescentParserAST;
 import formatter.JsonFormat;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Rectangle2D;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import treeview.JsonTreeView;
 import validator.Lexeme;
 import validator.Lexer;
 import validator.QuoteMismatchException;
 import validator.RecursiveDescendantParser;
 
-import javax.print.DocFlavor;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.*;
-import java.net.FileNameMap;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -35,7 +37,8 @@ public class Controller implements Initializable {
     Label jsonStatusIndicator;
     @FXML
     Button copyRawTextButton, saveToFileButton;
-
+    @FXML
+    TreeView<String> treeView1;
     final String JSON_TEXT_RESET = "Paste JSON or select from file",
             COPY_RAW_TEXT_RESET = "Copy raw text",
             SAVE_TO_FILE_RESET = "Save to file";
@@ -73,9 +76,7 @@ public class Controller implements Initializable {
         BufferedReader bufferedReader;
 
         try {
-
             bufferedReader = new BufferedReader(new FileReader(selectedFile));
-
             String text;
             while ((text = bufferedReader.readLine()) != null) {
                 stringBuffer.append(text);
@@ -121,8 +122,21 @@ public class Controller implements Initializable {
             jsonStatusIndicator.setText("Valid JSON");
             String formattedJSON = jsonFormat.formatJSON(inputJson);
             jsonInputText.setText(formattedJSON);
+
+            RecursiveDescentParserAST parserAST = new RecursiveDescentParserAST();
+            ASTNode rootNode = parserAST.buildAST(tokenizedInput);
+            JsonTreeView jsonTreeView = new JsonTreeView();
+            if(rootNode==null)
+                System.out.println("Sad..");
+            TreeItem<String> root = jsonTreeView.buildTree("Preview", rootNode);
+            System.out.println("Root is null is "+(root==null));
+            treeView1.setRoot(root);
+
+
+
         } else {
             jsonStatusIndicator.setText("Invalid JSON");
+            treeView1.setRoot(null);
         }
     }
 

@@ -2,14 +2,10 @@ package ast;
 
 public class Value extends ASTNode{
 
-    private final ASTNode.Type nodeType = ASTNode.Type.VALUE;
-    enum ValueType {NUMERIC, STRING, NULL, BOOLEAN}
-    ValueType valueType;
-    String text;
+    public String text;
 
-    public Value(String text, ValueType valueType){
+    public Value(String text){
         this.text = text;
-        this.valueType = valueType;
     }
 
 }
