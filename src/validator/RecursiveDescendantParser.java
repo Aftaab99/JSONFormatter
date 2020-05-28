@@ -24,7 +24,6 @@ public class RecursiveDescendantParser {
                 return value(input);
             }
         }
-        System.out.println("False call in PAIR, i=" + index);
         return false;
     }
 

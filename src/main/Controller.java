@@ -126,10 +126,7 @@ public class Controller implements Initializable {
             RecursiveDescentParserAST parserAST = new RecursiveDescentParserAST();
             ASTNode rootNode = parserAST.buildAST(tokenizedInput);
             JsonTreeView jsonTreeView = new JsonTreeView();
-            if(rootNode==null)
-                System.out.println("Sad..");
             TreeItem<String> root = jsonTreeView.buildTree("Preview", rootNode);
-            System.out.println("Root is null is "+(root==null));
             treeView1.setRoot(root);
 
 
@@ -153,6 +150,7 @@ public class Controller implements Initializable {
             saveToFileButton.setText("Saved!");
         } catch (IOException e) {
             System.out.println("Something went wrong while writing");
+            e.printStackTrace();
         }
     }
 
